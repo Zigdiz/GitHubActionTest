@@ -6,7 +6,7 @@ namespace TestProject1
         public void Test1()
         {
             // Dummy test code
-            Assert.True(true);
+            Assert.True(false);
         }
     }
 }
