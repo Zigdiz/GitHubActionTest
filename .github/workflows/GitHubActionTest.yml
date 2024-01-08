@@ -15,13 +15,14 @@ env:
 jobs:
   tests:
     name: Unit Testing
+    needs: Build
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2.1.0
       - run: dotnet test
   build:
+    name: Build
     runs-on: windows-latest
-    needs: tests
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET SDK
