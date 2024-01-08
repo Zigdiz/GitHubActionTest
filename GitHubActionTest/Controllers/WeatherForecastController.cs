@@ -29,5 +29,11 @@ namespace GitHubActionTest.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet(Name = "Test")]
+        public string Test()
+        {
+            return "yo";
+        }
     }
 }
