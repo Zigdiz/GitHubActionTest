@@ -18,8 +18,8 @@ namespace GitHubActionTest.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpGet]
+        public IEnumerable<WeatherForecast> Get2()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
@@ -30,7 +30,7 @@ namespace GitHubActionTest.Controllers
             .ToArray();
         }
 
-        [HttpGet(Name = "Test")]
+        [HttpGet("GetAuthenticated")]
         public string Test()
         {
             return "yo";
