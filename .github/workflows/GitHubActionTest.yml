@@ -21,6 +21,7 @@ jobs:
       - run: dotnet test
   build:
     runs-on: windows-latest
+    needs: tests
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET SDK
