@@ -2,7 +2,7 @@ name: CD
 on:
   pull_request:
     branches:
-    - master
+      - master
 env:
   AZURE_WEBAPP_NAME: GitHubActionTest
   AZURE_WEBAPP_PACKAGE_PATH: GitHubActionTest\publish
