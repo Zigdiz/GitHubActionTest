@@ -2,7 +2,7 @@ name: CI
 on:
   push:
     branches:
-    - master
+    - development
 env:
   AZURE_WEBAPP_NAME: GitHubActionTest
   AZURE_WEBAPP_PACKAGE_PATH: GitHubActionTest\publish
