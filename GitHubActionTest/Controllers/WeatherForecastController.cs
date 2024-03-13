@@ -15,9 +15,14 @@ namespace GitHubActionTest.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        private readonly IConfiguration _configuration;
+
+
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IConfiguration configuration)
         {
             _logger = logger;
+            _configuration = configuration;
+
         }
 
         [Authorize]
@@ -59,7 +64,7 @@ namespace GitHubActionTest.Controllers
             if (credentials.Username == "testuser" && credentials.Password == "testpassword")
             {
                 // Jos tunnistetiedot ovat oikein, generoi JWT-token ja palauta se
-                var tokenService = new TokenService(); // Oletetaan, että TokenService on luokka, joka generoi tokenin
+                var tokenService = new TokenService(_configuration); // Oletetaan, että TokenService on luokka, joka generoi tokenin
                 var token = tokenService.GenerateToken();
                 return Ok(new { Token = token });
             }
