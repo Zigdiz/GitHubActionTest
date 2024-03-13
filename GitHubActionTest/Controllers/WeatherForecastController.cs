@@ -46,11 +46,18 @@ namespace GitHubActionTest.Controllers
             .ToArray();
         }
 
-        [HttpGet("GetAuthenticated")]
-        public string Test()
+        [HttpGet("QP")]
+        public IEnumerable<WeatherForecast> Get([FromQuery] string id, [FromQuery] string name)
         {
-            return "yo";
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+                TemperatureC = Random.Shared.Next(-20, 55),
+                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+            })
+            .ToArray();
         }
+
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] UserCredentials credentials)
@@ -60,7 +67,13 @@ namespace GitHubActionTest.Controllers
             {
                 // Jos tunnistetiedot ovat oikein, generoi JWT-token ja palauta se
                 var tokenService = new TokenService(); // Oletetaan, ett‰ TokenService on luokka, joka generoi tokenin
-                var token = tokenService.GenerateToken();
+                var token = tokenService.GenerateToken(credentials.Username, false);
+                return Ok(new { Token = token });
+            }
+            else if(credentials.Username == "admin" && credentials.Password == "adminpassword")
+            {
+                var tokenService = new TokenService();
+                var token = tokenService.GenerateToken(credentials.Username, true);
                 return Ok(new { Token = token });
             }
             else
@@ -69,5 +82,20 @@ namespace GitHubActionTest.Controllers
                 return Unauthorized("K‰ytt‰j‰tunnus tai salasana on v‰‰rin.");
             }
         }
+
+        [Authorize(Policy = "RequireAdminRole")]
+        [HttpGet("GetSecret")]
+        public IActionResult GetSecretData()
+        {
+            return Ok("T‰m‰ on suojattua tietoa vain Admin-roolia k‰ytt‰vilt‰.");
+        }
+
+        [Authorize(Policy = "RequireUserRole")]
+        [HttpGet("GetSecretUser")]
+        public IActionResult GetSecretDataUser()
+        {
+            return Ok("T‰m‰ on suojattua tietoa vain Admin-roolia k‰ytt‰vilt‰.");
+        }
+
     }
 }

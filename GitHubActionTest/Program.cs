@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Security.Claims;
 using System.Text;
 
 namespace GitHubActionTest
@@ -36,6 +37,12 @@ namespace GitHubActionTest
                     ValidAudience = "MyTestApiUsers", // Esim. https://my.apiusers.com
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your_secret_key_that_is_at_least_32_bytes_long"))
                 };
+            });
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireAdminRole", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
+                options.AddPolicy("RequireUserRole", policy => policy.RequireClaim(ClaimTypes.Role, "User"));
             });
 
             builder.Services.AddSwaggerGen(c =>
